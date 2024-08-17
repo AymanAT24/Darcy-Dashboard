@@ -1,0 +1,5 @@
+primaryColor: 6E5036
+accentColor: ECD8BC
+warmColor: EEE6DB
+backgroundColor: F5F1EE
+smallFontColor: 808080

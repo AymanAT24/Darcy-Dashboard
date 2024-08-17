@@ -1,0 +1,188 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../assets/portrait-thoughtful-woman-wearing-chic-orange-clothes-isolated-khaki_1162141-432932.jpg"),
+    center;
+  // background: linear-gradient(45deg, #a17149, transparent);
+
+  background-size: cover;
+
+  .card {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 50%;
+    // background-color: transparent;
+    border-radius: 0.5rem;
+    min-height: 600px;
+    box-shadow: 0px 0px 30px 0px #fcfafab0;
+    overflow: hidden;
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: center;
+      gap: 2rem;
+      background: linear-gradient(rgba(0, 0, 0, 0.45), rgb(161 113 73 / 45%)),
+        url("../assets/front-view-woman-posing-with-monochrome-outfit.jpg")
+          center;
+      background-size: cover;
+      padding: 2rem;
+      color: #fff;
+      position: relative;
+
+      img {
+        width: 200px;
+        position: absolute;
+        top: 20px;
+        transform: translateX(25%);
+      }
+      p {
+        font-size: 16px;
+        line-height: 25px;
+        color: #ddd;
+        font-family: ITC;
+      }
+
+      span {
+        font-size: 14px;
+      }
+
+      button {
+        min-width: 50%;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        color: #6e5038;
+        border: none;
+        box-shadow: 0px 0px 14px 0px black;
+        cursor: pointer;
+        transition: 0.5s;
+        font-weight: bold;
+      }
+
+      button:hover {
+        color: #fff;
+        background: #865e3e;
+      }
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      gap: 3rem;
+      justify-content: center;
+      position: relative;
+      backdrop-filter: blur(8px);
+
+      // background: url("../assets/portrait-young-stylish-model-casual-summer-clothes-brown-hat-with-natural-makeup-glasses-white.jpg"),
+      //   center;
+      // background-size: cover;
+
+      img {
+        width: 125px;
+        position: absolute;
+        top: 20px;
+        left: 15px;
+      }
+      h1 {
+        color: #fff;
+        font-size: 2.5rem;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        input {
+          border: none;
+          // border-bottom: 1px solid #be895b;
+          border-radius: 6px;
+          color: #fff;
+          outline: none;
+          padding: 20px 10px;
+          box-shadow: 0px 0px 25px 0px #fcfafab0;
+          background-color: #be895b91;
+        }
+        ::-webkit-input-placeholder {
+          color: #ddd;
+        }
+        .password-input {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+
+          input {
+            width: 100%;
+            padding-right: 30px; /* Ensure space for the icon */
+          }
+
+          .password-icon {
+            position: absolute;
+            right: 10px;
+            top: 53%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: color 0.5s; /* Apply transition to color */
+          }
+
+          .icon {
+            color: #6e5038;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 1;
+          }
+
+          .icon-exit {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+
+          .password-icon:hover {
+            color: #6e5038; /* Change color on hover */
+          }
+        }
+
+        button {
+          width: 100%;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          color: #fff;
+          background: #6e5036;
+          border: none;
+          box-shadow: 0px 0px 15px 0px #fcfafab0;
+          cursor: pointer;
+          transition: 0.5s;
+          font-weight: bold;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+            sans-serif;
+          font-size: 20px;
+        }
+        button:hover {
+          color: #fff;
+          background: #a17149;
+        }
+        .checkbox {
+          font-size: 14px;
+          color: #ddd;
+          padding: 0.5rem;
+          font-family: ITC;
+          display: flex;
+          align-items: center;
+          padding: 0.5rem;
+        }
+        .rem {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
