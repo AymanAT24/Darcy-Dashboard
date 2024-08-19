@@ -163,7 +163,7 @@ const Customers = ({ isDarkMode }) => {
                   Customers
                 </th>
                 <th
-                  className={`px-6 py-3 font-bold text-left text-md uppercase tracking-wider ${
+                  className={`px-6 py-3 font-bold text-center text-md uppercase tracking-wider ${
                     isDarkMode
                       ? "bg-amber-800 text-light-text"
                       : "bg-amber-900 text-white"
@@ -172,7 +172,7 @@ const Customers = ({ isDarkMode }) => {
                   Email
                 </th>
                 <th
-                  className={`px-6 py-3 font-bold text-left text-md uppercase tracking-wider ${
+                  className={`px-6 py-3 font-bold text-center text-md uppercase tracking-wider ${
                     isDarkMode
                       ? "bg-amber-800 text-light-text"
                       : "bg-amber-900 text-white"
@@ -181,7 +181,7 @@ const Customers = ({ isDarkMode }) => {
                   Orders
                 </th>
                 <th
-                  className={`px-6 py-3 font-bold text-left text-md uppercase tracking-wider ${
+                  className={`px-6 py-3 font-bold text-center text-md uppercase tracking-wider ${
                     isDarkMode
                       ? "bg-amber-800 text-light-text"
                       : "bg-amber-900 text-white"

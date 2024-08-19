@@ -1,14 +1,14 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineHome, MdOutlineLocalShipping } from "react-icons/md";
 import { IoPeopleOutline } from "react-icons/io5";
 import { BiCategory } from "react-icons/bi";
-
 import logo from "../assets/logo_white.png";
 
 const Sidebar = ({ activeMenu, isDarkMode }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const activeLink = `flex items-center transition-all gap-5 pl-4 pt-3 pb-2.5 rounded-lg ${
     isDarkMode ? "text-gray-300 bg-zinc-600" : "text-black bg-gray-200"
@@ -21,6 +21,14 @@ const Sidebar = ({ activeMenu, isDarkMode }) => {
   } m-2`;
 
   const isActive = (path) => location.pathname === path;
+
+  const handleSignOut = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem("token");
+
+    // Navigate to the login page
+    navigate("/login");
+  };
 
   return (
     <div
@@ -74,16 +82,15 @@ const Sidebar = ({ activeMenu, isDarkMode }) => {
           </Link>
 
           <div className="transition-all fixed bottom-4">
-            <Link to="/login">
-              <div
-                className={`flex items-center font-extrabold justify-between ${
-                  isDarkMode ? "text-red-500" : "text-red-600"
-                } m-3 uppercase`}
-              >
-                <span>Sign Out</span>
-                <FaSignOutAlt className="ml-40" />
-              </div>
-            </Link>
+            <button
+              onClick={handleSignOut}
+              className={`flex items-center font-extrabold justify-between ${
+                isDarkMode ? "text-red-500" : "text-red-600"
+              } m-3 uppercase`}
+            >
+              <span>Sign Out</span>
+              <FaSignOutAlt className="ml-40" />
+            </button>
           </div>
         </>
       )}
