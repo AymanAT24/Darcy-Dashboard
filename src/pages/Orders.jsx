@@ -1,71 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function Orders({ isDarkMode }) {
-  const clients = [
-    {
-      id: 1,
-      name: "Client 1",
-      address: "23, Nasr City, Cairo, Egypt",
-      phone: "01012345678",
-      orders: [
-        {
-          id: 1,
-          productImage: "https://via.placeholder.com/80", // replace with actual image URL
-          productName: "Black Shirt",
-          orderNo: "345",
-          color: "Black",
-          size: "Large",
-          quantity: 1,
-          total: "500EGP",
-          orderDate: "7/8/2024 02:00PM",
-        },
-        {
-          id: 2,
-          productImage: "https://via.placeholder.com/80", // replace with actual image URL
-          productName: "White Shirt",
-          orderNo: "345",
-          color: "Black",
-          size: "Large",
-          quantity: 1,
-          total: "350EGP",
-          orderDate: "7/8/2024 02:00PM",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Client 2",
-      address: "45, Zamalek, Cairo, Egypt",
-      phone: "01098765432",
-      orders: [
-        {
-          id: 3,
-          productImage: "https://via.placeholder.com/80", // replace with actual image URL
-          productName: "Red Jacket",
-          orderNo: "346",
-          color: "Red",
-          size: "Medium",
-          quantity: 2,
-          total: "1200EGP",
-          orderDate: "7/9/2024 03:00PM",
-        },
-        {
-          id: 4,
-          productImage: "https://via.placeholder.com/80", // replace with actual image URL
-          productName: "Blue Jacket",
-          orderNo: "346",
-          color: "Blue",
-          size: "Medium",
-          quantity: 2,
-          total: "1200EGP",
-          orderDate: "7/9/2024 03:00PM",
-        },
-      ],
-    },
-  ];
+  const [clients, setClients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter clients based on search query, but show all clients if the query is empty
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.0.50:3000/api/orders/allOrders",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const ordersData = response.data.data;
+
+        // Map the orders data to the required format
+        const formattedClients = ordersData?.map((order) => ({
+          id: order._id,
+          name: order.user.name,
+          address: `${order.street}, ${order.city}, ${order.governate}`,
+          phone: order.user.phoneNumber,
+          orders: order.products.map((product) => ({
+            id: product._id,
+            productImage: `http://192.168.0.50:3000/api/${product.product.colors[0].image}`, // Replace with actual base URL
+            productName: product.product.name,
+            orderNo: order.order_number,
+            color: product.color,
+            size: product.size,
+            quantity: product.quantity,
+            total: `${product.total_price} EGP`,
+            orderDate: new Date(order.createdAt).toLocaleString(),
+          })),
+        }));
+
+        setClients(formattedClients);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  // Filter clients based on search query
   const filteredClients = clients.filter((client) =>
     client.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -108,7 +89,7 @@ function Orders({ isDarkMode }) {
               >
                 {client.name}
               </div>
-              {client?.orders?.map((order, index) => (
+              {client.orders.map((order, index) => (
                 <div key={order.id}>
                   <div
                     className={`rounded-lg shadow-md p-4 w-full ${
