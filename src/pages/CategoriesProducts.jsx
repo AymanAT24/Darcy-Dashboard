@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { CategoryProductsButtons } from "../components";
 
@@ -13,14 +13,11 @@ const CategoriesProducts = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.0.50:3000/api/products/getAll/${categoryId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`products/getAll/${categoryId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data.status) {
           setProducts(response.data.data);
         }

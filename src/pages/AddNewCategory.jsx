@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -31,16 +31,12 @@ const AddNewCategory = ({ isDarkMode }) => {
     formData.append("image", categoryImage);
 
     try {
-      const response = await axios.post(
-        "http://192.168.0.50:3000/api/cats/create",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post("cats/create", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.data.status) {
         toast.success("Category Created Successfully!");

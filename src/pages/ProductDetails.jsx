@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import Slider from "react-slick";
 import { useParams } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
@@ -14,14 +14,11 @@ const ProductDetails = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.0.50:3000/api/products/getOne/${productId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`products/getOne/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data.status) {
           setProduct(response.data.data);
         }
@@ -65,7 +62,7 @@ const ProductDetails = ({ isDarkMode }) => {
           {product.colors.map((color) => (
             <div key={color._id}>
               <img
-                src={`http://192.168.0.50:3000/api/${color.image}`}
+                src={`${import.meta.env.VITE_MAIN_URL}${color.image}`}
                 alt={color.name}
                 className="w-full"
               />

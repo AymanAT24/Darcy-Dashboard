@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { toast } from "react-toastify";
 import "./Login.scss";
 import { IoIosEyeOff } from "react-icons/io";
@@ -19,9 +19,8 @@ const Login = ({ isDarkMode, toggleTheme }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const url = "http://192.168.0.50:3000";
     try {
-      const response = await axios.post(`${url}/api/auth/login`, {
+      const response = await axios.post(`auth/login`, {
         email,
         password,
       });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 
 function Orders({ isDarkMode }) {
   const [clients, setClients] = useState([]);
@@ -8,14 +8,11 @@ function Orders({ isDarkMode }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.50:3000/api/orders/allOrders",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get("orders/allOrders", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const ordersData = response.data.data;
 
         // Map the orders data to the required format
@@ -26,7 +23,9 @@ function Orders({ isDarkMode }) {
           phone: order.user.phoneNumber,
           orders: order.products.map((product) => ({
             id: product._id,
-            productImage: `http://192.168.0.50:3000/api/${product.product.colors[0].image}`, // Replace with actual base URL
+            productImage: `${import.meta.env.VITE_MAIN_URL}${
+              product.product.colors[0].image
+            }`,
             productName: product.product.name,
             orderNo: order.order_number,
             color: product.color,

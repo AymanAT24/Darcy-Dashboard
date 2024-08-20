@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,14 +15,11 @@ const Categories = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.0.50:3000/api/cats/getCats",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("api/cats/getCats", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.data.status) {
           setCategories(response.data.data);
         }
@@ -75,23 +72,17 @@ const Categories = ({ isDarkMode }) => {
   const deleteCategory = async (categoryId) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(
-        `http://192.168.0.50:3000/api/cats/deleteCategory/${categoryId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`cats/deleteCategory/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // After deleting, fetch the updated list
-      const response = await axios.get(
-        "http://192.168.0.50:3000/api/cats/getCats",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("cats/getCats", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.status) {
         setCategories(response.data.data);
       }
@@ -138,7 +129,7 @@ const Categories = ({ isDarkMode }) => {
             onClick={() => handleCategoryClick(category._id)}
           >
             <img
-              src={`http://192.168.0.50:3000/api/${category.image}`}
+              src={`${import.meta.env.VITE_MAIN_URL}${category.image}`}
               alt={category.title}
               className="w-full h-full object-contain"
             />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,14 +14,11 @@ const EditCategory = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.0.50:3000/api/cats/getOneCat/${categoryId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`cats/getOneCat/${categoryId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (response.data.status) {
           setCategoryName(response.data.data.title);
           // Set categoryImage URL or handle it according to your needs
@@ -58,7 +55,7 @@ const EditCategory = ({ isDarkMode }) => {
 
     try {
       const response = await axios.patch(
-        `http://192.168.0.50:3000/api/cats/updateCategory/${categoryId}`,
+        `cats/updateCategory/${categoryId}`,
         formData,
         {
           headers: {
