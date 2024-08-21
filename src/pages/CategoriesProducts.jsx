@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { CategoryProductsButtons } from "../components";
 
 const CategoriesProducts = ({ isDarkMode }) => {
@@ -54,18 +54,18 @@ const CategoriesProducts = ({ isDarkMode }) => {
         >
           Products
         </h1>
-        <button
-          className={`px-4 py-2 rounded-md hover:bg-opacity-80 ${
-            isDarkMode ? "bg-green-600 text-white" : "bg-green-500 text-white"
-          }`}
-        >
-          + Add New Product
-        </button>
+        <Link to={`/addnewproduct/${categoryId}`}>
+          <button
+            className={`px-4 py-2 rounded-md hover:bg-opacity-80 ${
+              isDarkMode ? "bg-green-600 text-white" : "bg-green-500 text-white"
+            }`}
+          >
+            + Add New Product
+          </button>
+        </Link>
       </div>
       <div className="grid cursor-pointer grid-cols-4 gap-4 mt-4">
         {products.map((product) => {
-          console.log(product.colors[0].image); // Log the first image of each product's colors array
-
           // Handle cases where colors array might be empty
           const productImage =
             product.colors.length > 0

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
 import Slider from "react-slick";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Modal from "react-modal";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({ isDarkMode }) => {
-  const { productId } = useParams(); // Get the productId from the route params
+  const { productId, categoryId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +29,7 @@ const ProductDetails = ({ isDarkMode }) => {
         }
       } catch (error) {
         console.error("Error fetching product:", error);
+        setError("Product not found.");
       } finally {
         setLoading(false);
       }
@@ -32,18 +38,49 @@ const ProductDetails = ({ isDarkMode }) => {
     fetchProduct();
   }, [productId, token]);
 
-  // Slider settings
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`products/delete/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Product deleted successfully!");
+      navigate(`/categories`);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Failed to delete product.");
+    }
+  };
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "400px",
+      padding: "20px",
+      background: "#fff",
+      borderRadius: "10px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
   };
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a spinner or loading indicator
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   if (!product) {
@@ -58,7 +95,7 @@ const ProductDetails = ({ isDarkMode }) => {
     >
       {/* Left Side: Images */}
       <div className="w-1/3 flex flex-col items-center mr-8">
-        <Slider {...settings} className="w-full mb-4">
+        <Slider className="w-full mb-4">
           {product.colors.map((color) => (
             <div key={color._id}>
               <img
@@ -98,7 +135,7 @@ const ProductDetails = ({ isDarkMode }) => {
         <div className="mt-6">
           <h2
             className={`text-lg font-semibold mb-2 ${
-              isDarkMode ? "text-amber-500" : "text-dark-text"
+              isDarkMode ? "text-amber-500" : "text-amber-800"
             }`}
           >
             Product Details
@@ -115,7 +152,7 @@ const ProductDetails = ({ isDarkMode }) => {
         <div className="mt-4">
           <h3
             className={`text-lg font-semibold ${
-              isDarkMode ? "text-amber-500" : "text-dark-text"
+              isDarkMode ? "text-amber-500" : "text-amber-800"
             }`}
           >
             Available Sizes
@@ -126,7 +163,7 @@ const ProductDetails = ({ isDarkMode }) => {
         <div className="mt-4">
           <h3
             className={`text-lg font-semibold ${
-              isDarkMode ? "text-amber-500" : "text-dark-text"
+              isDarkMode ? "text-amber-500" : "text-amber-800"
             }`}
           >
             Average Rating
@@ -135,6 +172,40 @@ const ProductDetails = ({ isDarkMode }) => {
             {product.ratingsAverage} / 5 ({product.ratingsQuantity} reviews)
           </p>
         </div>
+
+        <button
+          onClick={openModal}
+          className={`mt-4 px-4 py-2 rounded-md ${
+            isDarkMode ? "bg-red-600 text-white" : "bg-red-500 text-white"
+          }`}
+        >
+          Delete Product
+        </button>
+
+        {/* Confirmation Modal */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Confirm Delete"
+          style={customStyles}
+        >
+          <h2 className="text-lg font-semibold">Confirm Deletion</h2>
+          <p>Are you sure you want to delete this product?</p>
+          <div className="mt-4">
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
+            >
+              Yes, Delete
+            </button>
+            <button
+              onClick={closeModal}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md"
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
       </div>
     </div>
   );

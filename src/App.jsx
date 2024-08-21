@@ -12,6 +12,7 @@ import {
   AddNewCategory,
   EditCategory,
   UserOrders,
+  AddNewProduct,
 } from "./pages";
 
 const App = () => {
@@ -75,6 +76,10 @@ const App = () => {
                   <Route
                     path="/productdetails/:productId"
                     element={<ProductDetails isDarkMode={isDarkMode} />}
+                  />
+                  <Route
+                    path="/addnewproduct/:categoryId"
+                    element={<AddNewProduct isDarkMode={isDarkMode} />}
                   />
 
                   <Route

@@ -8,3 +8,4 @@ export { default as ProductDetails } from "./ProductDetails";
 export { default as AddNewCategory } from "./AddNewCategory";
 export { default as EditCategory } from "./EditCategory";
 export { default as UserOrders } from "./UserOrders";
+export { default as AddNewProduct } from "./AddNewProduct";

@@ -46,6 +46,7 @@ const ProductSection = ({ isDarkMode }) => {
                 isDarkMode ? "bg-dark-card" : "bg-white"
               }`}
             >
+              {/* {console.log(products)} */}
               <img
                 src={`${import.meta.env.VITE_MAIN_URL}${
                   product.colors[0].image

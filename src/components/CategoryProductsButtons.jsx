@@ -7,9 +7,6 @@ const CategoryProductsButtons = () => {
         <button className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
           Edit
         </button>
-        <button className="px-3 ml-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
-          Delete
-        </button>
       </div>
     </>
   );
