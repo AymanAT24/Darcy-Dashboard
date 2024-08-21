@@ -1,84 +1,33 @@
-import React, { useState } from "react";
-
-const customers = [
-  {
-    name: "Esther Howard",
-    emailSubscription: "Subscribed",
-    location: "Great Falls, Maryland",
-    orders: "2 Orders",
-    amountSpent: "$2500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Leslie Alexander",
-    emailSubscription: "Not subscribed",
-    location: "Pasadena, Oklahoma",
-    orders: "3 Orders",
-    amountSpent: "$3500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Guy Hawkins",
-    emailSubscription: "Pending",
-    location: "Corona, Michigan",
-    orders: "N/A",
-    amountSpent: "$0.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Savannah Nguyen",
-    emailSubscription: "Subscribed",
-    location: "Syracuse, Connecticut",
-    orders: "N/A",
-    amountSpent: "$0.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Bessie Cooper",
-    emailSubscription: "Not subscribed",
-    location: "Lansing, Illinois",
-    orders: "1 Orders",
-    amountSpent: "$470.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Ronald Richards",
-    emailSubscription: "Subscribed",
-    location: "Great Falls, Maryland",
-    orders: "2 Orders",
-    amountSpent: "$2500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Marvin McKinney",
-    emailSubscription: "Subscribed",
-    location: "Coppell, Virginia",
-    orders: "2 Orders",
-    amountSpent: "$1500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Kathryn Murphy",
-    emailSubscription: "Not subscribed",
-    location: "Lafayette, California",
-    orders: "3 Orders",
-    amountSpent: "$2500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-  {
-    name: "Eleanor Pena",
-    emailSubscription: "Pending",
-    location: "Corona, Michigan",
-    orders: "1 Orders",
-    amountSpent: "$2500.00",
-    imgSrc: "https://via.placeholder.com/40",
-  },
-];
+import React, { useState, useEffect } from "react";
+import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const Customers = ({ isDarkMode }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [customers, setCustomers] = useState([]);
   const itemsPerPage = 8;
+  const navigate = useNavigate(); // Hook to navigate between routes
+
+  // Fetch customers from the API
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await axios.get("auth/getUsers", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response.data.status) {
+          setCustomers(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
 
   // Filter customers based on search query
   const filteredCustomers = customers.filter((customer) =>
@@ -103,6 +52,11 @@ const Customers = ({ isDarkMode }) => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
     setCurrentPage(1); // Reset to first page on new search
+  };
+
+  // Handle clicking the "View Orders" button
+  const handleViewOrders = (userId) => {
+    navigate(`/userorders/${userId}`); // Navigate to the UserOrders page with userId
   };
 
   return (
@@ -178,16 +132,7 @@ const Customers = ({ isDarkMode }) => {
                       : "bg-amber-900 text-white"
                   }`}
                 >
-                  Orders
-                </th>
-                <th
-                  className={`px-6 py-3 font-bold text-center text-md uppercase tracking-wider ${
-                    isDarkMode
-                      ? "bg-amber-800 text-light-text"
-                      : "bg-amber-900 text-white"
-                  }`}
-                >
-                  Amount Spent
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -205,7 +150,13 @@ const Customers = ({ isDarkMode }) => {
                     }`}
                   >
                     <img
-                      src={customer.imgSrc}
+                      src={
+                        customer.profileImage
+                          ? `${import.meta.env.VITE_MAIN_URL}${
+                              customer.profileImage
+                            }`
+                          : "https://via.placeholder.com/40"
+                      }
                       alt={customer.name}
                       className="w-10 h-10 rounded-full mr-4"
                     />
@@ -217,22 +168,20 @@ const Customers = ({ isDarkMode }) => {
                         isDarkMode ? "text-light-text" : "text-dark-text"
                       }`}
                     >
-                      {customer.emailSubscription}
+                      {customer.email}
                     </span>
                   </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap text-md ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    {customer.orders}
-                  </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap text-md ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    {customer.amountSpent}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleViewOrders(customer._id)}
+                      className={`px-4 py-2 rounded ${
+                        isDarkMode
+                          ? "bg-amber-500 text-white"
+                          : "bg-amber-800 text-white"
+                      }`}
+                    >
+                      View Orders
+                    </button>
                   </td>
                 </tr>
               ))}

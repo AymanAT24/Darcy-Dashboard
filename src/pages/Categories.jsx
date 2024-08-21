@@ -15,7 +15,7 @@ const Categories = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("api/cats/getCats", {
+        const response = await axios.get("cats/getCats", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

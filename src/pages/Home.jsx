@@ -43,7 +43,7 @@ const Home = ({ isDarkMode }) => {
               isDarkMode ? "text-amber-500" : "text-amber-800"
             }`}
           >
-            Products
+            Highest rating
           </h1>
           <button
             className={`border border-transparent hover:bg-amber-800 hover:text-white text-sm rounded p-2 ${
@@ -51,11 +51,7 @@ const Home = ({ isDarkMode }) => {
                 ? "text-gray-400 hover:bg-amber-700"
                 : "text-gray-600  "
             }`}
-          >
-            <Link to="products" className="flex items-center">
-              See All <BsArrowRightShort />
-            </Link>
-          </button>
+          ></button>
         </div>
 
         <div className="flex w-full">
